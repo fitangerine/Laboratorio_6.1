@@ -1,44 +1,92 @@
 #include <iostream>
 #include <string>
-
 using namespace std;
 
-class Pedido {
-private:
-	int id; //Codigo del pedido
-	string nombre; //Nombre del cliente
-	double total; //Total del pedido en quetzales
+// Superclase Libro
+class Libro {
+protected:
+    string titulo;
+    string autor;
+    int anioPublicacion;
 
 public:
-	//Constructor
-	Pedido(int id, string nombre, double total)
-		: id(id), nombre(nombre), total(total){ }
-	int getId() const { return id; }
-	std::string getNombre() const { return nombre; }
-	double getTotal() const { return total; }
+    Libro(const string& titulo, const string& autor, int anioPublicacion)
+        : titulo(titulo), autor(autor), anioPublicacion(anioPublicacion) {
+    }
 
-	//Metodo Mostrar la informacion 
-	void MostrarInfo()const {
-		std::cout << "ID del pedido: " << id << '\n';
-		std::cout << "Nombre del Cliente: " << nombre << '\n';
-		std::cout << "Total del pedido: Q" << total << '\n';
-	}
+    virtual void mostrarInformacion() const {
+        cout << "Titulo: " << titulo << endl;
+        cout << "Autor: " << autor << endl;
+        cout << "Anio de publicacion: " << anioPublicacion << endl;
+    }
+};
 
-	//Metodo mostrar solo total y codigo
-	void mostrarTotal()const {
-		std::cout << "El pedido " << id << " vale un total de Q" << total << '\n';
-	}
+// Subclase Novela
+class Novela : public Libro {
+private:
+    int numeroPaginas;
+
+public:
+    Novela(const string& titulo, const string& autor, int anioPublicacion, int numeroPaginas)
+        : Libro(titulo, autor, anioPublicacion), numeroPaginas(numeroPaginas) {
+    }
+
+    void mostrarInformacion() const override {
+        Libro::mostrarInformacion();
+        cout << "Numero de paginas: " << numeroPaginas << endl;
+    }
+};
+
+// Subclase Poesia
+class Poesia : public Libro {
+private:
+    string estilo;
+
+public:
+    Poesia(const string& titulo, const string& autor, int anioPublicacion, const string& estilo)
+        : Libro(titulo, autor, anioPublicacion), estilo(estilo) {
+    }
+
+    void mostrarInformacion() const override {
+        Libro::mostrarInformacion();
+        cout << "Estilo: " << estilo << endl;
+    }
+};
+
+// Subclase Ensayo
+class Ensayo : public Libro {
+private:
+    string tema;
+
+public:
+    Ensayo(const string& titulo, const string& autor, int anioPublicacion, const string& tema)
+        : Libro(titulo, autor, anioPublicacion), tema(tema) {
+    }
+
+    void mostrarInformacion() const override {
+        Libro::mostrarInformacion();
+        cout << "Tema: " << tema << endl;
+    }
 };
 
 int main() {
-	Pedido p1(001, "Carmen Lopez", 200.00);
-	p1.MostrarInfo();
-	p1.mostrarTotal();
+    // Crear objetos de cada subclase
+    Novela novela("La sombra del viento", "Carlos Ruiz Zafon", 2001, 416);
+    Poesia poesia("Cantos de amor y de muerte", "Pablo Neruda", 1954, "Romantico");
+    Ensayo ensayo("El origen de las especies", "Charles Darwin", 1859, "Biologia evolutiva");
 
-	Pedido p2(002, "Jose Perez", 150.00);
-	p2.MostrarInfo();
-	p2.mostrarTotal();
+    // Mostrar informacion de cada objeto
+    cout << "Novela:" << endl;
+    novela.mostrarInformacion();
+    cout << endl;
 
-	return 0;
+    cout << "Poesia:" << endl;
+    poesia.mostrarInformacion();
+    cout << endl;
+
+    cout << "Ensayo:" << endl;
+    ensayo.mostrarInformacion();
+    cout << endl;
+
+    return 0;
 }
-
